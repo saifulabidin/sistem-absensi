@@ -28,13 +28,15 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 const corsOptions = {
-  origin: '*', // During development, you can use '*' to accept any origin
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : ['http://localhost:3000'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
   credentials: true
 };
 app.use(cors(corsOptions));
-app.use(helmet());
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' } // Allow loading resources from different origins
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
