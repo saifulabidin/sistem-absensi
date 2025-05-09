@@ -1,17 +1,25 @@
-import { User } from 'firebase/auth'
-import { useEffect } from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuthentication } from './useAuthentication';
 
 type Props = {
-	user: User | null
-	redirectPath?: string
-}
+  redirectTo?: string;
+};
 
-const UnauthenticatedGuard = ({ user, redirectPath = '/dashboard' }: Props) => {
-	useEffect(() => {
-		console.log(`log ::: UnauthenticatedGuard / user: ${user}`)
-	}, [])
-	return user ? <Navigate to={redirectPath} replace /> : <Outlet />
-}
+const UnauthenticatedGuard = ({ redirectTo = '/dashboard' }: Props) => {
+  const { user, isLoading } = useAuthentication();
 
-export default UnauthenticatedGuard
+  if (isLoading) {
+    // Display a loading indicator while checking authentication
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  }
+
+  // Redirect to dashboard if authenticated
+  if (user) {
+    return <Navigate to={redirectTo} />;
+  }
+
+  // Render the public routes
+  return <Outlet />;
+};
+
+export default UnauthenticatedGuard;

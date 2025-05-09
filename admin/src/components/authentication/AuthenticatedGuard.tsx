@@ -1,17 +1,25 @@
-import { User } from 'firebase/auth'
-import { useEffect } from 'react'
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom';
+import { useAuthentication } from './useAuthentication';
 
 type Props = {
-	user: User | null
-	redirectPath?: string
-}
+  redirectTo?: string;
+};
 
-const AuthenticatedGuard = ({ user, redirectPath = '/login' }: Props) => {
-	useEffect(() => {
-		console.log(`log ::: AuthenticatedGuard / user: ${user}`)
-	}, [])
-	return user ? <Outlet /> : <Navigate to={redirectPath} replace />
-}
+const AuthenticatedGuard = ({ redirectTo = '/login' }: Props) => {
+  const { user, isLoading } = useAuthentication();
 
-export default AuthenticatedGuard
+  if (isLoading) {
+    // Display a loading indicator while checking authentication
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  }
+
+  // Redirect to login if not authenticated
+  if (!user) {
+    return <Navigate to={redirectTo} />;
+  }
+
+  // Render the protected routes
+  return <Outlet />;
+};
+
+export default AuthenticatedGuard;
