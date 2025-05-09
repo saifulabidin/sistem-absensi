@@ -5,7 +5,7 @@
 Sistem absensi memiliki dua tipe pengguna dengan akses yang berbeda:
 
 ### 1. Admin
-- Mengakses **Admin Panel** berbasis web (Next.js)
+- Mengakses **Admin Panel** berbasis web 
 - Memiliki kontrol penuh atas sistem
 - Dapat mengelola data karyawan dan laporan
 
@@ -27,7 +27,7 @@ Sistem absensi memiliki dua tipe pengguna dengan akses yang berbeda:
 ┌─────────────────┐                  ┌─────────────────┐
 │                 │                  │                 │
 │   Admin Panel   │                  │   Mobile App    │
-│    (Next.js)    │                  │    (Flutter)    │
+│                 │                  │    (Flutter)    │
 │                 │                  │                 │
 └────────┬────────┘                  └────────┬────────┘
          │                                    │
@@ -142,8 +142,8 @@ router.get('/profile', verifyToken, userController.getProfile);
 ## Fitur Khusus Mobile App (Karyawan)
 
 ### Absensi
-- Clock in dengan verifikasi lokasi
-- Clock out dengan kalkulasi jam kerja
+- Clock in dengan lokasi GPS
+- Clock out dengan lokasi GPS dan kalkulasi jam kerja
 - Tampilkan status kehadiran hari ini
 
 ### Profil dan Riwayat
@@ -153,7 +153,7 @@ router.get('/profile', verifyToken, userController.getProfile);
 - Status kehadiran (tepat waktu, terlambat, absen)
 
 ### Keamanan
-- Ganti password
+- Ganti password hanya untuk admin panel
 - Info perangkat yang digunakan
 - Deteksi login tidak wajar
 

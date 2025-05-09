@@ -19,6 +19,18 @@ module.exports = {
 			scale: {
 				flip: '-1',
 			},
+			spacing: {
+				'270': '270px',
+				'minus-270': '-270px',
+				'minus-320': '-320px',
+			},
+			width: {
+				'270': '270px',
+			},
+			margin: {
+				'minus-270': '-270px',
+				'minus-320': '-320px',
+			},
 			minHeight: {
 				'100vh': '100vh',
 			},

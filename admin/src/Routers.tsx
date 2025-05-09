@@ -7,7 +7,11 @@ import Dashboard from './pages/Dashboard'
 import Login from './pages/Login'
 import NotFound from './pages/NotFound'
 import UsersIndex from './pages/users/UsersIndex'
+import AddUser from './pages/users/AddUser'
+import RegisterUser from './pages/users/RegisterUser'
 import ResetPassword from './pages/ResetPassword'
+import LateEmployeesReport from './pages/reports/LateEmployeesReport'
+import AttendanceSummaryReport from './pages/reports/AttendanceSummaryReport'
 
 const Routers = () => {
   return (
@@ -28,6 +32,10 @@ const Routers = () => {
             <Route path='/' element={<Navigate to='dashboard' />} />
             <Route path='dashboard' element={<Dashboard />} />
             <Route path='users' element={<UsersIndex />} />
+            <Route path='users/add' element={<AddUser />} />
+            <Route path='users/register' element={<RegisterUser />} />
+            <Route path='reports/late-employees' element={<LateEmployeesReport />} />
+            <Route path='reports/attendance-summary' element={<AttendanceSummaryReport />} />
           </Route>
         </Route>
         

@@ -6,3 +6,32 @@ body {
 	@apply text-black-200;
 	// color: #dbdbdb;
 }
+
+@layer utilities {
+  .ml-minus-320 {
+    margin-left: -320px;
+  }
+  
+  .ml-minus-270 {
+    margin-left: -270px;
+  }
+  
+  .w-270 {
+    width: 270px;
+  }
+}
+
+@layer utilities {
+  .ml-minus-320 {
+    margin-left: -320px;
+  }
+  
+  .ml-minus-270 {
+    margin-left: -270px;
+  }
+  
+  .w-270 {
+    width: 270px;
+  }
+}
+

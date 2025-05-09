@@ -34,6 +34,11 @@ export const SidebarConfig = [
 				icon: <HiUserGroup size={16} />,
 			},
 			{
+				name: 'Add',
+				path: 'users/add',
+				icon: <CgAddR size={16} />,
+			},
+			{
 				name: 'Register',
 				path: 'users/register',
 				icon: <CgAddR size={16} />,
