@@ -1,0 +1,16 @@
+{
+    "rewrites": [
+        {
+            "source": "/ra-enterprise-demo/assets/:id",
+            "destination": "/assets/:id"
+        },
+        {
+            "source": "/ra-enterprise-demo/images/tours/:id",
+            "destination": "/images/tours/:id"
+        },
+        {
+            "source": "/ra-enterprise-demo/:id",
+            "destination": "/:id"
+        }
+    ]
+}
