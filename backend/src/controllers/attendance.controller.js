@@ -8,11 +8,46 @@ const { Op } = require('sequelize');
 const clockIn = async (req, res, next) => {
   try {
     const userId = req.userId;
-    const { notes, location } = req.body;
+    const { 
+      notes, 
+      latitude, 
+      longitude,
+      device_id,
+      device_name,
+      device_model 
+    } = req.body;
+    
+    // Validate location data if provided
+    if ((latitude !== undefined && longitude === undefined) || 
+        (latitude === undefined && longitude !== undefined)) {
+      return res.status(400).json({ 
+        message: "Both latitude and longitude must be provided together" 
+      });
+    }
+    
+    // Create device log if device info is provided
+    if (device_id || device_name || device_model) {
+      try {
+        const DeviceLog = require('../models').DeviceLog;
+        await DeviceLog.create({
+          user_id: userId,
+          device_id: device_id || 'unknown',
+          device_name: device_name || 'unknown',
+          device_model: device_model || 'unknown',
+          ip_address: req.ip || 'unknown',
+          login_time: new Date(),
+          location: (latitude && longitude) ? { type: 'Point', coordinates: [longitude, latitude] } : null
+        });
+      } catch (deviceError) {
+        logger.error('Error creating device log:', deviceError);
+        // Don't fail the entire request if device log fails
+      }
+    }
     
     const attendanceLog = await attendanceService.createClockIn(userId, { 
-      notes, 
-      location 
+      notes,
+      latitude,
+      longitude 
     });
     
     return res.status(201).json({
@@ -27,7 +62,7 @@ const clockIn = async (req, res, next) => {
       return res.status(400).json({ message: error.message });
     }
     
-    next(error);
+    return res.status(500).json({ message: "Error processing clock-in", error: error.message });
   }
 };
 
@@ -35,9 +70,50 @@ const clockIn = async (req, res, next) => {
 const clockOut = async (req, res, next) => {
   try {
     const userId = req.userId;
-    const { notes } = req.body;
+    const { 
+      notes, 
+      latitude, 
+      longitude,
+      device_id,
+      device_name,
+      device_model 
+    } = req.body;
     
-    const attendanceLog = await attendanceService.createClockOut(userId, { notes });
+    // Validate location data if provided
+    if ((latitude !== undefined && longitude === undefined) || 
+        (latitude === undefined && longitude !== undefined)) {
+      return res.status(400).json({ 
+        message: "Both latitude and longitude must be provided together" 
+      });
+    }
+    
+    // Update device log if device info is provided
+    if (device_id || device_name || device_model) {
+      try {
+        const DeviceLog = require('../models').DeviceLog;
+        const latestDeviceLog = await DeviceLog.findOne({
+          where: { 
+            user_id: userId,
+            logout_time: null
+          },
+          order: [['login_time', 'DESC']]
+        });
+        
+        if (latestDeviceLog) {
+          latestDeviceLog.logout_time = new Date();
+          await latestDeviceLog.save();
+        }
+      } catch (deviceError) {
+        logger.error('Error updating device log:', deviceError);
+        // Don't fail the entire request if device log update fails
+      }
+    }
+    
+    const attendanceLog = await attendanceService.createClockOut(userId, { 
+      notes,
+      latitude,
+      longitude 
+    });
     
     return res.status(200).json({
       message: "Clock-out successful",
@@ -51,7 +127,7 @@ const clockOut = async (req, res, next) => {
       return res.status(400).json({ message: error.message });
     }
     
-    next(error);
+    return res.status(500).json({ message: "Error processing clock-out", error: error.message });
   }
 };
 

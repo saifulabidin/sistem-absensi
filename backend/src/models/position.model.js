@@ -15,7 +15,7 @@ const Position = db.define('positions', {
   level: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    defaultValue: 0
+    defaultValue: 1
   }
 }, {
   timestamps: true,

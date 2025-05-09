@@ -48,6 +48,7 @@ const User = db.define('users', {
         user.password = await bcrypt.hash(user.password, salt);
       }
     },
+    // Hash password before update if changed
     beforeUpdate: async (user) => {
       if (user.changed('password')) {
         const salt = await bcrypt.genSalt(10);
@@ -59,7 +60,7 @@ const User = db.define('users', {
 
 // Instance method to validate password
 User.prototype.validatePassword = async function(password) {
-  return bcrypt.compare(password, this.password);
+  return await bcrypt.compare(password, this.password);
 };
 
 module.exports = User;

@@ -32,11 +32,17 @@ const errorHandler = (err, req, res, next) => {
     statusCode = err.statusCode;
     message = err.message;
   }
+  // Handle validation errors
+  else if (err.name === 'ValidationError') {
+    statusCode = 400;
+    message = err.message;
+  }
 
-  // Return error response
+  // Send response
   res.status(statusCode).json({
     success: false,
-    message
+    message,
+    stack: process.env.NODE_ENV === 'development' ? err.stack : undefined
   });
 };
 
