@@ -141,9 +141,8 @@ Please organize the project with a clear separation of concerns:
 
 ### Employee Form
 - Personal information section (name, email, gender, phone)
-- Employment details section (employee ID, position, department)
+- Employment details section (NIK National ID, position, department)
 - Address information
-- Profile picture upload
 - Password generation or reset
 - Account status toggle
 
